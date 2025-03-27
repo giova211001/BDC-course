@@ -1,4 +1,11 @@
+import com.sun.istack.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.rdd.RDD;
+import scala.Tuple2;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -74,6 +81,7 @@ public class G01HW1 {
             throw new IllegalArgumentException("USAGE: file_path num_partitions num_cluster num_iterations");
         }
 
+
         // Store and print the COMMAND LINE ARGUMENT
         String file_path = args[0];
         int L = Integer.parseInt(args[1]);
@@ -84,6 +92,30 @@ public class G01HW1 {
                 "L (number of partitions): " + L + "\n" +
                 "K (number of clusters): " + K + "\n" +
                 "M (number of iterations): " + M + "\n");
+
+        /*
+            SPARK SETUP
+         */
+
+        SparkConf conf = new SparkConf(true).setAppName("G01HW1");
+        JavaSparkContext ctx = new JavaSparkContext(conf);
+        ctx.setLogLevel("OFF");
+
+        /*
+            Store the input file into the RDD and subdivide into L partitions
+            textFile method -> transform the input file into an RDD of Strings, whose element correspond to the
+            distinct lines of thr file
+         */
+        JavaRDD<String> input = ctx.textFile(file_path).repartition(L).cache();
+
+        // Setting the GLOBAL VARIABLES
+        long points;
+        points = input.count();
+        System.out.println("Number of inputs: " + points);
+        JavaPairRDD<Tuple2<Double, Double>, String> pairs;
+        // Convert the input into pairs of the form (point, group)
+
+
 
 
 
