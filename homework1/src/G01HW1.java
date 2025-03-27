@@ -59,18 +59,33 @@ import java.io.IOException;
 public class G01HW1 {
 
     public static void main(String[] args) throws IOException {
-        //read from file
-        String file_path = "test.txt";
-        BufferedReader br = new BufferedReader(new FileReader(file_path));
-        String row;
-        while((row = br.readLine()) != null){
-            String [] item = row.split(",");
-            for (String e: item)
-            {
-                System.out.println(e);
-            }
-            System.out.println(row);
+
+        /*Check the number of CMD LINE PARAMETERS in order to satisfy the following requirement of the homework
+         -> Prints the command-line arguments and stores  𝐿,𝐾,𝑀 into suitable variables.
+         INPUTS:
+         1) path to the file storing the input points
+         2) L = number of partitions
+         3) K = number of desired clusters
+         4) M = number of iterations
+
+         */
+
+        if(args.length != 4){
+            throw new IllegalArgumentException("USAGE: file_path num_partitions num_cluster num_iterations");
         }
+
+        // Store and print the COMMAND LINE ARGUMENT
+        String file_path = args[0];
+        int L = Integer.parseInt(args[1]);
+        int K = Integer.parseInt(args[2]);
+        int M = Integer.parseInt(args[3]);
+
+        System.out.println("File path: " + file_path + "\n" +
+                "L (number of partitions): " + L + "\n" +
+                "K (number of clusters): " + K + "\n" +
+                "M (number of iterations): " + M + "\n");
+
+
 
     }
 }
